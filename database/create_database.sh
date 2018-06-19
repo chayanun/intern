@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. .env
+
+HOST=${DOCKER_PGHOST:-$HOST}
+
+# create users
+PGPASSWORD=$PASSWORDSUPERUSER createuser -h $HOST -p $PORT -U $SUPERUSER $ADMINUSER && PGPASSWORD=$PASSWORDSUPERUSER psql -h $HOST -p $PORT -U $SUPERUSER -c "alter user $ADMINUSER with password '$PASSWORDADMIN';" || true
+
+PGPASSWORD=$PASSWORDSUPERUSER createuser -h $HOST -p $PORT -U $SUPERUSER $NORMALUSER && PGPASSWORD=$PASSWORDSUPERUSER psql -h $HOST -p $PORT -U $SUPERUSER -c "alter user $NORMALUSER with password '$PASSWORDUSER';" || true
+
+#create database
+PGPASSWORD=$PASSWORDSUPERUSER createdb -h $HOST -p $PORT -U $SUPERUSER -E UTF8 -T template0 --lc-collate='en_US.UTF-8' --lc-ctype='en_US.UTF-8' -e $DATABASE
+
+#change owner
+PGPASSWORD=$PASSWORDSUPERUSER psql -h $HOST -p $PORT -U $SUPERUSER -c "ALTER DATABASE $DATABASE OWNER TO $ADMINUSER;"
