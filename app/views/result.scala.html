@@ -1,0 +1,8 @@
+@(name: String, message: Option[String])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
+
+@main("Result") {
+  <h1>Welcome to Play!</h1>
+
+  @name <br>
+  @message
+}

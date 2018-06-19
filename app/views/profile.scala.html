@@ -1,0 +1,15 @@
+@import models.DataModel.contactUs
+@(contactForm: Form[contactUs])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
+
+@main("My Profile") {
+  <h1>Welcome to Play!</h1>
+
+  @helper.form(action = routes.HomeController.contactPost()){
+    @helper.CSRF.formField
+    @helper.inputText(contactForm("name"))
+    @helper.inputText(contactForm("message"))
+
+    <button type="submit">Submit</button>
+  }
+
+}
