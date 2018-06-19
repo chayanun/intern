@@ -16,9 +16,11 @@ import play.api.i18n.I18nSupport
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) with I18nSupport{
 
-  val contactForm: Form[contactUs] = Form(
+  val ContactForm = Form(
     mapping(
-      "name" -> text,
+      "name" -> nonEmptyText,
+      "email" -> nonEmptyText,
+      "phone" -> optional(text),
       "message" -> optional(text)
     )(contactUs.apply)(contactUs.unapply)
   )
@@ -27,23 +29,25 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.index())
   }
 
-  def profile() = Action { implicit request =>
-    Logger.error("Open My Profile!")
-    Ok(views.html.profile(contactForm))
+  def about() = Action { implicit request =>
+    Ok(views.html.about())
   }
 
-  def contactResult(name: String, message: Option[String]) = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.result(name, message))
+  def contactPage() = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.contact(ContactForm))
   }
 
-  def contactPost = Action(parse.form(contactForm)) { implicit request =>
-    val data = request.body
-    Logger.info(data.toString)
-    println(data)
-    val newUser = contactUs(data.name, data.message)
-    //Redirect(routes.HomeController.contactResult(newUser.name, newUser.message))
-    Ok(views.html.result(data.name, data.message))
-    //Logger.info("AAA")
+  def contactResult() = Action { implicit request =>
+    ContactForm.bindFromRequest.fold(
+      formError => {
+        Logger.error(s"Form Leave Period error ${formError.toString}")
+        BadRequest(views.html.contact(formError))
+      },
+      formData => {
+        Ok(views.html.result(formData.name, formData.email, formData.phone, formData.message))
+      }
+    )
+
   }
 
 }

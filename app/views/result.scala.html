@@ -1,8 +1,20 @@
-@(name: String, message: Option[String])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
+@(name: String, email: String, phone: Option[String], message: Option[String])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
 
 @main("Result") {
-  <h1>Welcome to Play!</h1>
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <h2>Hello @name,</h2>
+            <p>Thanks for being awesome!</p>
+            <p>We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please use the telephone number listed below to talk to one of our staff members. Otherwise, we will reply by email as soon as possible.</p>
+            <p>Talk to you soon,</p>
+            <p>[Tradition]</p>
 
-  @name <br>
-  @message
+            <hr>
+            <p><b>Name:</b><br>@name</p>
+            <p><b>Email:</b><br>@email</p>
+            <p><b>Phone:</b><br>@phone.getOrElse("-")</p>
+            <p><b>Message:</b><br>@message.getOrElse("-")</p>
+
+        </div>
+    </div>
 }
