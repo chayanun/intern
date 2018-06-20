@@ -1,0 +1,107 @@
+@import database.dbtable.ContactData
+@import database.dbtable.ContactService
+@(resObj: List[ContactService])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
+
+@admin("Service") {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Service Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for((service, index) <- resObj.zipWithIndex) {
+                <tr>
+                    <td>@(index+1)</td>
+                    <td>@service.serviceName</td>
+                    <td>
+                        <a href="#" class="edit-item" data-toggle="modal" data-target="#editItem" data-id="@service.serviceId" data-name="@service.serviceName">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="modal" id="editItem" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="control-group">
+                        <div class="form-group floating-label-form-group controls">
+                            <label>Service Name</label>
+                            <input type="text" class="form-control" placeholder="Service Name" id="name" name="name" required data-validation-required-message="Please enter your name.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnUpdate">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmDelete" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnDelete">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).on("click", ".edit-item", function(){
+            var id = $(this).data("id");
+            $("#btnUpdate").data("id", id);
+            $("#name").val($(this).data("name"))
+        });
+
+        $(document).on("click", "#btnUpdate", function(){
+            var id = $(this).data("id");
+            var jsData = JSON.stringify({
+                id: parseInt(id),
+                name: $("#name").val()
+            });
+
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                url: "@routes.HomeController.updateService()",
+                data: jsData,
+                success: function (data) {
+                    if(data == "success"){
+                        location.reload();
+                    }else{
+                        $('#deleteModal').modal('hide');
+                        alert("Cannot delete!");
+                    }
+                }
+            });
+        });
+
+    </script>
+}

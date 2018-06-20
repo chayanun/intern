@@ -9,6 +9,11 @@ GET     /about-us                   controllers.HomeController.about
 GET     /contact-us                 controllers.HomeController.contactPage
 POST    /contact-us                 controllers.HomeController.contactResult
 GET     /contact-list               controllers.HomeController.contactList
+POST    /delete                     controllers.HomeController.delete
+GET     /service                    controllers.HomeController.serviceList
+POST    /update-service             controllers.HomeController.updateService
+POST    /delete-service             controllers.HomeController.deleteService
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

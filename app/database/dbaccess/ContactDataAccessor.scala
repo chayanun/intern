@@ -29,5 +29,9 @@ class ContactDataAccessor@Inject()(protected val dbConfigProvider: DatabaseConfi
   def insert(contactObj: ContactData): DBIO[Int] = {
     ContactDataTable returning ContactDataTable.map(_.contactId) += contactObj
   }
+
+  def delete(id: Int): DBIO[Int] = {
+    ContactDataTable.filter(_.contactId === id).delete
+  }
 }
 

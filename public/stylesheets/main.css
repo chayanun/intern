@@ -1,0 +1,12 @@
+.admin-heading{
+    min-height: 66px;
+}
+a{
+    text-decoration: none;
+}
+a:active, a:link, a:visited, a:hover {
+    text-decoration: none;
+}
+:focus {
+    outline: 0;
+}

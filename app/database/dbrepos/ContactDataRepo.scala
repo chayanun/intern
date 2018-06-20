@@ -7,6 +7,7 @@ import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 class ContactDataRepo @Inject()(protected val dbConfigProvider: DatabaseConfigProvider,
                                 contactDataAccessor: ContactDataAccessor)
@@ -24,5 +25,9 @@ class ContactDataRepo @Inject()(protected val dbConfigProvider: DatabaseConfigPr
 
   def getById(id: Int): Future[Option[(ContactData, ContactService)]] = {
     db.run(contactDataAccessor.getById(id))
+  }
+
+  def delete(id: Int): Future[Try[Int]] = {
+    db.run(contactDataAccessor.delete(id).asTry)
   }
 }
