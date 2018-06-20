@@ -1,8 +1,8 @@
 @import models.DataModel.contactUs
-@(form: Form[contactUs])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
+@import database.dbtable.ContactService
+@(form: Form[contactUs], serviceList: List[ContactService])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
 
 @main("Contact Us") {
-
   <div class="row">
     @if(form.hasErrors){
       <div class="col-lg-8 col-md-10 mx-auto">
@@ -22,7 +22,16 @@
         <!-- WARNING: Some web hosts do not allow emails to be sent through forms to common mail hosts like Gmail or Yahoo. It's recommended that you use a private domain email address! -->
         <!-- To use the contact form, your site must be on a live web host with PHP! The form will not work locally! -->
       <form name="sentMessage" id="contactForm" action="@routes.HomeController.contactResult()" method="post" novalidate>
-        @helper.CSRF.formField
+        <div class="control-group">
+          <div class="form-group">
+              <label>Service</label>
+              <select class="form-control" id="exampleSelect1" name="contactService">
+                  @for(item <- serviceList){
+                      <option value="@item.serviceId">@item.serviceName</option>
+                  }
+              </select>
+          </div>
+        </div>
         <div class="control-group">
           <div class="form-group floating-label-form-group controls">
             <label>Name</label>
