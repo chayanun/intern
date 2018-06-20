@@ -12,6 +12,8 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2
 libraryDependencies += "com.typesafe.play" %% "play-slick" % "3.0.0"
 libraryDependencies += "com.typesafe.play" %% "play-slick-evolutions" % "3.0.0"
 libraryDependencies += "com.github.tminglei" %% "slick-pg" % "0.16.2"
+libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.2.24"
+libraryDependencies += "org.json4s" %% "json4s-native" % "3.5.3"
 
 
 // Adds additional packages into Twirl

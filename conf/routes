@@ -4,15 +4,19 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
-GET     /about-us                   controllers.HomeController.about
-GET     /contact-us                 controllers.HomeController.contactPage
-POST    /contact-us                 controllers.HomeController.contactResult
-GET     /contact-list               controllers.HomeController.contactList
-POST    /delete                     controllers.HomeController.delete
-GET     /service                    controllers.HomeController.serviceList
-POST    /update-service             controllers.HomeController.updateService
-POST    /delete-service             controllers.HomeController.deleteService
+GET     /                                   controllers.HomeController.index
+GET     /about-us                           controllers.HomeController.about
+GET     /contact-us                         controllers.HomeController.contactPage
+POST    /contact-us                         controllers.HomeController.contactResult
+GET     /admin/contact-list                 controllers.AdminController.contactList
+POST    /admin/delete                       controllers.AdminController.delete
+GET     /admin/service                      controllers.AdminController.serviceList
+POST    /admin/update-service               controllers.AdminController.updateService
+POST    /admin/delete-service               controllers.AdminController.deleteService
+GET     /login                              controllers.AdminController.login
+GET     /logout                             controllers.AdminController.logout
+POST    /authenticate                       controllers.AdminController.authenticate
+GET     /admin/dashboard                    controllers.AdminController.dashboard
 
 
 # Map static resources from the /public folder to the /assets URL path

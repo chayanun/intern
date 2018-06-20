@@ -13,5 +13,12 @@ CREATE TABLE contact_data (
   created_date timestamp with time zone NOT NULL
 );
 
+CREATE TABLE user_login (
+  user_id SERIAL PRIMARY KEY,
+  user_name character varying(100) NOT NULL,
+  password character varying(128) NOT NULL,
+  user_role integer NOT NULL
+);
+
 ALTER TABLE "contact_data"
 ADD CONSTRAINT "contact_service_fk" FOREIGN KEY ("contact_service_id") REFERENCES "contact_service" ("service_id");
