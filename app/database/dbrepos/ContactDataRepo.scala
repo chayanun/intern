@@ -15,6 +15,9 @@ class ContactDataRepo @Inject()(protected val dbConfigProvider: DatabaseConfigPr
     db.run(contactDataAccessor.getAll).map(r => r)
   }
 
+  def getAllWithService: Future[List[(ContactData, ContactService)]]={
+    db.run(contactDataAccessor.getAllWithService)
+  }
   def insert(contactObj: ContactData): Future[Int] ={
     db.run(contactDataAccessor.insert(contactObj))
   }

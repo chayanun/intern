@@ -14,6 +14,14 @@ class ContactDataAccessor@Inject()(protected val dbConfigProvider: DatabaseConfi
     ContactDataTable.result.map(_.toList)
   }
 
+  def getAllWithService: DBIO[List[(ContactData, ContactService)]]={
+    val query = for{
+      (d,s) <- ContactDataTable.join(ContactServiceTable).on(_.serviceId === _.serviceId)
+    } yield (d, s)
+
+    query.result.map(_.toList)
+  }
+
   def getById(id: Int): DBIO[Option[(ContactData, ContactService)]] = {
     ContactDataTable.filter(_.contactId === id).join(ContactServiceTable).on(_.serviceId === _.serviceId).result.headOption
   }

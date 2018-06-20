@@ -67,4 +67,10 @@ class HomeController @Inject()(cc: ControllerComponents,
     )
   }
 
+  def contactList() = Action.async { implicit request =>
+    contactDataRepo.getAllWithService.map{ case data =>
+      Ok(views.html.contactList(data))
+    }
+  }
+
 }
