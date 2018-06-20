@@ -18,4 +18,8 @@ class ContactDataRepo @Inject()(protected val dbConfigProvider: DatabaseConfigPr
   def insert(contactObj: ContactData): Future[Int] ={
     db.run(contactDataAccessor.insert(contactObj))
   }
+
+  def getById(id: Int): Future[Option[(ContactData, ContactService)]] = {
+    db.run(contactDataAccessor.getById(id))
+  }
 }

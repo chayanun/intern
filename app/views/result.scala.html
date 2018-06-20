@@ -1,10 +1,15 @@
 @import database.dbtable.ContactData
 @import database.dbtable.ContactService
-@(resObj: ContactData, serviceObj: ContactService, errorMessage: Option[String])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
+@(resObj: ContactData, errorMessage: Option[String])(implicit request: play.api.mvc.RequestHeader, flash: play.api.mvc.Flash, messages: Messages)
 
 @main("Result") {
     <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
+            @errorMessage.map { error =>
+            <h2>Hello @resObj.contactName,</h2>
+            <p>Sorry, we cannot get your message. Please try again</p>
+            <p>[Tradition]</p>
+            }.getOrElse{
             <h2>Hello @resObj,</h2>
             <p>Thanks for being awesome!</p>
             <p>We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please use the telephone number listed below to talk to one of our staff members. Otherwise, we will reply by email as soon as possible.</p>
@@ -12,11 +17,11 @@
             <p>[Tradition]</p>
 
             <hr>
-            <p><b>Name:</b><br>@resObj</p>
-            <p><b>Email:</b><br>@email</p>
-            <p><b>Phone:</b><br>@phone.getOrElse("-")</p>
-            <p><b>Message:</b><br>@message.getOrElse("-")</p>
-
+            <p><b>Name:</b><br>@resObj.contactName</p>
+            <p><b>Email:</b><br>@resObj.contactEmail</p>
+            <p><b>Phone:</b><br>@resObj.contactPhone.getOrElse("-")</p>
+            <p><b>Message:</b><br>@resObj.contactMessage.getOrElse("-")</p>
+            }
         </div>
     </div>
 }

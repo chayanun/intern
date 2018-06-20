@@ -11,7 +11,7 @@ class ContactDataAccessor@Inject()(protected val dbConfigProvider: DatabaseConfi
                                   (implicit ec: ExecutionContext) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
   def getAll: DBIO[List[ContactData]] = {
-    ContactDataTable.sortBy(_.createdDate).result.map(_.toList)
+    ContactDataTable.result.map(_.toList)
   }
 
   def getById(id: Int): DBIO[Option[(ContactData, ContactService)]] = {

@@ -58,10 +58,10 @@ class HomeController @Inject()(cc: ControllerComponents,
       },
       formData => {
         val newObj = ContactData(0, formData.service, formData.name, formData.email, formData.phone, formData.message, ZonedDateTime.now())
-        contactDataRepo.insert(newObj).map { _ =>
-          Ok(views.html.result(formData.name, formData.email, formData.phone, formData.message, None))
+        contactDataRepo.insert(newObj).map { id =>
+          Ok(views.html.result(newObj, None))
         }.recover { case ex =>
-          Ok(views.html.result(formData.name, formData.email, formData.phone, formData.message, Some(ex.getMessage)))
+          Ok(views.html.result(newObj, Some(ex.getMessage)))
         }
       }
     )
