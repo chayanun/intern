@@ -12,7 +12,7 @@ import play.api.mvc._
 import models.DataModel._
 import play.api.i18n.I18nSupport
 import secure.Authenticated
-import utils.MailServer
+import utils.MailGunServer
 
 import scala.concurrent.ExecutionContext
 
@@ -26,7 +26,7 @@ class HomeController @Inject()(cc: ControllerComponents,
                                authen: Authenticated,
                                contactServiceRepo: ContactServiceRepo,
                                contactDataRepo: ContactDataRepo,
-                               mailServer: MailServer
+                               mailGunServer: MailGunServer
                               )(implicit ec: ExecutionContext)  extends AbstractController(cc) with I18nSupport{
 
   val ContactForm = Form(
@@ -75,7 +75,7 @@ class HomeController @Inject()(cc: ControllerComponents,
             s"<p><b>Phone:</b><br>${formData.phone.getOrElse("-")}</p>" +
             s"<p><b>Message:</b><br>${formData.message.getOrElse("-")}</p>"
 
-          mailServer.send(Seq(s"${formData.name} <${formData.email}>"), "Thanks for being awesome!", mailMessage)
+          mailGunServer.send(formData.email, "Thanks for being awesome!", mailMessage)
 
           Ok(views.html.result(newObj, None))
         }.recover { case ex =>

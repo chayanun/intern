@@ -17,8 +17,10 @@ libraryDependencies += "com.github.tminglei" %% "slick-pg" % "0.16.2"
 libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.2.24"
 libraryDependencies += "org.json4s" %% "json4s-native" % "3.5.3"
 
-libraryDependencies += "com.typesafe.play" %% "play-mailer" % "6.0.1"
-libraryDependencies += "com.typesafe.play" %% "play-mailer-guice" % "6.0.1"
+libraryDependencies += "com.sun.jersey" % "jersey-core" % "1.19.4"
+libraryDependencies += "com.sun.jersey" % "jersey-client" % "1.19.4"
+libraryDependencies += "com.sun.jersey.contribs" % "jersey-multipart" % "1.19.4"
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"
