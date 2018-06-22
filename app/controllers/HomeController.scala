@@ -47,23 +47,23 @@ class HomeController @Inject()(cc: ControllerComponents,
     Ok(views.html.about())
   }
 
-  def contactPage() = Action.async { implicit request: Request[AnyContent] =>
-    contactServiceRepo.getAll.map{ case (serviceList) =>
+  def contactPage(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    contactServiceRepo.getAll.map{ serviceList =>
       Ok(views.html.contact(ContactForm, serviceList))
     }
   }
 
-  def contactResult() = Action.async { implicit request: Request[AnyContent] =>
+  def contactResult(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     ContactForm.bindFromRequest.fold(
       formError => {
         Logger.error(s"Form Leave Period error ${formError.toString}")
-        contactServiceRepo.getAll.map{ case (serviceList) =>
+        contactServiceRepo.getAll.map{ serviceList =>
           BadRequest(views.html.contact(formError, serviceList))
         }
       },
       formData => {
         val newObj = ContactData(0, formData.service, formData.name, formData.email, formData.phone, formData.message, ZonedDateTime.now())
-        contactDataRepo.insert(newObj).map { id =>
+        contactDataRepo.insert(newObj).map { _ =>
           val mailMessage = s"<h2>Hello ${formData.name},</h2>" +
             "<p>Thanks for being awesome!</p>" +
             "<p>We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please use the telephone number listed below to talk to one of our staff members. Otherwise, we will reply by email as soon as possible.</p>" +
@@ -75,12 +75,7 @@ class HomeController @Inject()(cc: ControllerComponents,
             s"<p><b>Phone:</b><br>${formData.phone.getOrElse("-")}</p>" +
             s"<p><b>Message:</b><br>${formData.message.getOrElse("-")}</p>"
 
-          try {
-            mailServer.send(Seq(s"${formData.name} <${formData.email}>"), "Thanks for being awesome!", mailMessage)
-          }catch {
-            case e: Exception =>
-              Logger.info(s"${e.getMessage}")
-          }
+          mailServer.send(Seq(s"${formData.name} <${formData.email}>"), "Thanks for being awesome!", mailMessage)
 
           Ok(views.html.result(newObj, None))
         }.recover { case ex =>
